@@ -72,6 +72,8 @@
                 url = document.URL;
             }else if(forWhat === 'site'){
                 url = '{{@blog.url}}';
+            }else if(forWhat === 'facebook-page'){
+                url = 'https://www.facebook.com/projavascript';
             }
             // required in order to like button to show up on localhost
             if(url.indexOf('localhost') > -1){
@@ -87,7 +89,7 @@
             return $('<h3 id="comments">Your word now</h3><div class="fb-comments" data-href="'+getUrl(forWhat)+'" data-numposts="10" data-colorscheme="light"></div>');
         }
         // like button on the footer in every page
-        $('body > footer').prepend(getLikePlugin('site'));
+        $('body > footer').prepend(getLikePlugin('facebook-page'));
 
         if($('body').hasClass('post-template')){
             // like and comments on every post, at the end of the post
