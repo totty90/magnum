@@ -88,11 +88,16 @@
         var getCommentPlugin = function(forWhat){
             return $('<h3 id="comments">Your word now</h3><div class="fb-comments" data-href="'+getUrl(forWhat)+'" data-numposts="10" data-colorscheme="light"></div>');
         }
+        var getFollowWidget = function(forWhat){
+            return $('<div class="fb-follow" data-href="'+getUrl(forWhat)+'" data-colorscheme="light" data-layout="standard" data-show-faces="true"></div>')
+        }
         // like button on the footer in every page
         $('body > footer').prepend(getLikePlugin('facebook-page'));
+        $('body > footer').prepend(getFollowWidget('facebook-page'));
 
         if($('body').hasClass('post-template')){
             // like and comments on every post, at the end of the post
+            $('body > footer').prepend(getFollowWidget('facebook-page'));
             getLikePlugin('page').insertBefore($('article > #disqus_thread'))
             getCommentPlugin('page').insertBefore($('article > #disqus_thread'))
         }
