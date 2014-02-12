@@ -76,6 +76,7 @@
 
 
     <!-- Automatic facebook like, share and comment plugin -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script type="text/javascript">
         var currentUrl = document.URL;
         var getUrl = function(forWhat){
@@ -113,6 +114,48 @@
             getLikePlugin('page').insertBefore($('article > #disqus_thread'))
             getCommentPlugin('page').insertBefore($('article > #disqus_thread'))
         }
+
+
+        var adClient = 'ca-pub-7484826203790515';
+        var createAdBlock = function(adSlot, style){
+            return $('<ins class="adsbygoogle end-post"style="'+style+'" data-ad-client="ca-pub-7484826203790515" data-ad-slot="'+adSlot+'"></ins>')
+        }
+        var adGroups = [
+            {
+                name: 'big images and text',
+                fn: function(){
+                    var ad = createAdBlock('2973867583', 'display:inline-block');
+                    ad.insertBefore('footer.article_meta_magnum > .half:first');
+                }
+            },
+            {
+                name: 'big text only',
+                fn: function(){
+                    var ad = createAdBlock('1991171986', 'display:inline-block;width:728px;height:90px');
+                    ad.insertBefore('footer.article_meta_magnum > .half:first');
+                }
+            },
+            {
+                name: 'Before wrapper big text',
+                fn: function(){
+                    var ad = createAdBlock('7898104789', 'display:block;width:728px;height:90px;margin:0 auto;');
+                    ad.insertBefore('body > .wrapper_magnum:first');
+                }
+            },
+            {
+                name: 'Before wrapper big image',
+                fn: function(){
+                    var ad = createAdBlock('3328304386', 'display:block;width:728px;height:90px;margin:0 auto;');
+                    ad.insertBefore('body > .wrapper_magnum:first');
+                }
+            }
+        ]
+        var chosenAd = Math.floor(Math.random() * adGroups.length - 0.01);
+        adGroups[chosenAd].fn();
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        console.log('Has been chosen the: ' + adGroups[chosenAd].name + ' ad group.')
     </script>
+
+
 </body>
 </html>
