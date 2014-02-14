@@ -18,6 +18,18 @@ module.exports = function(grunt) {
         'compiled_css/*'
         ],
         tasks: ['cssmin']
+      },
+      combinejs: {
+        files: [
+            'custom_components/*'
+        ],
+        tasks: ['uglify:combinejs']
+      },
+      copyAll: {
+        files: [
+            'custom_components/*'
+        ],
+        tasks: ['copy:all']
       }
     },
 
@@ -31,10 +43,25 @@ module.exports = function(grunt) {
           [
           'bower_components/modernizr/modernizr.js',
           'custom_components/responsive_iframes/responsive_iframes.js',
-          'custom_components/magnum.js'
+          'custom_components/magnum.js',
+          'custom_components/ace/ace.js'
           ]
         }
       }
+    },
+
+    copy: {
+        all: {
+            files: [{
+                expand : true,
+                dot    : true,
+                cwd    : 'custom_components/ace',
+                dest   : '<%= ghost_location %>content/themes/<%= ghost_theme_name %>/assets/js/ace',
+                src    : [
+                    '*.js',
+                ]
+            }]
+        },
     },
 
     less: {
@@ -70,5 +97,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
 };
