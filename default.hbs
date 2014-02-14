@@ -54,14 +54,91 @@
 
     <script type='text/javascript'>
         var codePopup = function(){
+            var getTopScroll = function(){
+                var doc = document.documentElement;
+                return (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+            }
+
+            var attachEditor = function(){
+                $('#editor').css({
+                    width: '100%',
+                    height: '250px',
+                    position: 'relative'
+                })
+            }
+            var detachEditor = function(){
+                $('#editor').css({
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    position: 'fixed'
+                })
+            }
+
             var editor = ace.edit("editor");
-            $('#editor').css({
-                width: '100%',
-                height: '250px'
-            })
+            attachEditor()
             ace.config.set('basePath', '/assets/js/ace');
-            editor.setTheme("ace/theme/monokay");
+            editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/javascript");
+
+            var aceDoc = editor.getSession().getDocument();
+
+            // remove the first and the last line
+            aceDoc.removeLines(0, 0);
+            var aceDocLength = aceDoc.getLength();
+            aceDoc.removeLines(aceDocLength-1, aceDocLength-1);
+
+            var lineLinks = [];
+            var extractLineNumberRx = /(l#\d+)/g;
+            $("*:contains('l#')").each(function(i, el){
+                if(el.tagName === "SCRIPT"){return;}
+                var text = [];
+                var l = el.childNodes.length;
+                for(var i = 0; i < l; i++){
+                    if(el.childNodes[i].nodeType === 3){
+                        text.push(el.childNodes[i].wholeText);
+                    }
+                }
+                text = text.join('');
+                if(!text){return;}
+                var matches = text.match(extractLineNumberRx);
+                if(!matches){return};
+                var l = matches.length, r;
+                while(l--){
+                    r = new RegExp(matches[l], 'g');
+                    el.innerHTML = el.innerHTML.replace(r, '<span class="ace-line-ref" data-line="'+matches[l].substring(2,999999)+'">'+matches[l].substring(1,999999)+'</span>')
+                }
+            })
+            $('span.ace-line-ref').mouseover(function(evt){
+                var lineNumber = Number($(evt.target).attr('data-line'));
+                editor.gotoLine(lineNumber);
+                var Range = ace.require('ace/range').Range;
+                var range = new Range(lineNumber-1, 0, lineNumber-1, 9999);
+                editor.getSession().getSelection().addRange(range);
+                // var marker = editor.getSession().addMarker(range, "ace-active-line", "fullLine");
+            })
+
+            $(window ).scroll(function() {
+                console.log(getTopScroll())
+                if(getTopScroll() > 200){
+                    detachEditor();
+                }else{
+                    attachEditor();
+                }
+            });
+            setInterval(function(){
+            },1000);
+        }
+
+        function isScrolledIntoView(elem){
+            var docViewTop = $(window).scrollTop();
+            var docViewBottom = docViewTop + $(window).height();
+
+            var elemTop = $(elem).offset().top;
+            var elemBottom = elemTop + $(elem).height();
+
+            return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
         }
         codePopup();
     </script>

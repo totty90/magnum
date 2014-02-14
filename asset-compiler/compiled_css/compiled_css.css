@@ -116,6 +116,19 @@ li:before {
     color: #006600;
   }
 }
+.ace-line-ref {
+  background: #036B34;
+  color: #42D386;
+  padding: 5px;
+  cursor: pointer;
+  -webkit-transition: all 500ms ease;
+}
+.ace-line-ref:hover {
+  color: #036B34;
+  background: #42D386;
+  padding: 5px;
+  -webkit-transition: all 500ms ease;
+}
 .mt0 {
   margin-top: 0;
 }
@@ -464,6 +477,11 @@ footer a.subscribe_magnum {
 }
 .footertext_magnum {
   font-size: 0.809em;
+}
+.fb-comments,
+.fb-comments > span,
+.fb-comments > span > iframe[style] {
+  width: 100% !important;
 }
 @media (max-width: 52.0625em) {
   .wrapper_magnum {
