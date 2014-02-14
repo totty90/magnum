@@ -54,30 +54,33 @@
 
     <script type='text/javascript'>
         var codePopup = function(){
-            var getTopScroll = function(){
-                var doc = document.documentElement;
-                return (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-            }
+            $(".wrapper_magnum").css({
+                maxWidth: 999999
+            })
+            $('.postcontent_magnum').css({
+                padding: 0,
+                width: '100%',
+                float: 'left'
+            })
+            var contents = $('<div/>')
+            contents.css({
+                width: '50%',
+                display: 'block',
+                float: 'left',
+            })
+            contents.append($('.postcontent_magnum').children())
+            $('.postcontent_magnum').prepend(contents)
+            $('.postcontent_magnum').append($('#editor'))
 
-            var attachEditor = function(){
-                $('#editor').css({
-                    width: '100%',
-                    height: '250px',
-                    position: 'relative'
-                })
-            }
-            var detachEditor = function(){
-                $('#editor').css({
-                    height: '250px',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    position: 'fixed'
-                })
-            }
 
             var editor = ace.edit("editor");
-            attachEditor()
+            // update size of editor on resize
+            $('#editor').css({
+                width: '50%',
+                height: $(window).height() + 'px',
+                position: 'relative',
+                float: 'left'
+            })
             ace.config.set('basePath', '/assets/js/ace');
             editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/javascript");
@@ -119,16 +122,22 @@
                 // var marker = editor.getSession().addMarker(range, "ace-active-line", "fullLine");
             })
 
-            $(window ).scroll(function() {
-                console.log(getTopScroll())
-                if(getTopScroll() > 200){
-                    detachEditor();
-                }else{
-                    attachEditor();
+            var maxOffset = $('.postcontent_magnum').offset().top //+ $('.postcontent_magnum').height()
+            var currentOffset = 0;
+            $(window).scroll(function() {
+                var scrollTop = $(window).scrollTop();
+                var offset = $('#editor').offset().top;
+                var delta = scrollTop - offset + currentOffset;
+                if(delta < 0){
+                    delta = 0;
                 }
+                currentOffset = delta;
+                if(currentOffset > maxOffset){
+                    currentOffset = maxOffset;
+                }
+                console.log(currentOffset, maxOffset)
+                $('#editor').css({marginTop: currentOffset + 'px'})
             });
-            setInterval(function(){
-            },1000);
         }
 
         function isScrolledIntoView(elem){
