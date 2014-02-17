@@ -59,7 +59,7 @@
             if(indexView){return;}
 
             $('.article_magnum').css({
-                padding: 10,
+                padding: '0 0 0 10px',
             })
             $(".wrapper_magnum").css({
                 maxWidth: 999999
@@ -72,7 +72,7 @@
             if(postView){
                 var contents = $('<div/>')
                 contents.css({
-                    width: '37%',
+                    width: '39%',
                     display: 'block',
                     float: 'left',
                 })
@@ -83,15 +83,18 @@
 
 
             var editor = ace.edit("editor");
-            // update size of editor on resize
-            var height = indexView ? 300 : $(window).height()
-            $('#editor').css({
-                width: '60%',
-                marginLeft: '3%',
-                height: height + 'px',
-                position: 'relative',
-                float: 'left'
-            })
+            var updateEditorSize = function(){
+                // update size of editor on resize
+                var height = indexView ? 300 : $(window).height()
+                $('#editor').css({
+                    width: '60%',
+                    marginLeft: '1%',
+                    height: height + 'px',
+                    position: 'relative',
+                    float: 'left'
+                })
+            }
+            updateEditorSize();
             ace.config.set('basePath', '/assets/js/ace');
             editor.setTheme("ace/theme/monokai");
             editor.getSession().setMode("ace/mode/javascript");
@@ -126,32 +129,33 @@
             })
             $('span.ace-line-ref').mouseover(function(evt){
                 var lineNumber = Number($(evt.target).attr('data-line'));
-                editor.gotoLine(lineNumber+30);
                 editor.gotoLine(lineNumber);
                 var Range = ace.require('ace/range').Range;
                 var range = new Range(lineNumber-1, 9999, lineNumber-1, 0);
-                editor.getSession().getSelection().addRange(range);
-                var marker = editor.getSession().addMarker(range, "ace-active-line", "fullLine");
+                // editor.getSession().getSelection().addRange(range);
+                // var marker = editor.getSession().addMarker(range, "ace-active-line", "fullLine");
             })
 
-            if(postView){
-                var maxOffset = $('.postcontent_magnum').height() - $('.postcontent_magnum').offset().top
-                var currentOffset = 0;
-                $(window).scroll(function() {
-                    var scrollTop = $(window).scrollTop();
-                    var offset = $('#editor').offset().top;
-                    var delta = scrollTop - offset + currentOffset;
-                    if(delta < 0){
-                        delta = 0;
-                    }
-                    currentOffset = delta;
-                    if(currentOffset > maxOffset){
-                        currentOffset = maxOffset;
-                    }
-                    console.log(currentOffset, maxOffset)
-                    $('#editor').css({marginTop: currentOffset + 'px'})
-                });
-            }
+            $( window ).resize(function() {
+                updateEditorSize();
+            });
+
+            var currentOffset = 0;
+            $(window).scroll(function() {
+                var maxOffset = $('.postcontent_magnum').height() - $('.postcontent_magnum').offset().top;
+                var scrollTop = $(window).scrollTop();
+                var offset = $('#editor').offset().top;
+                var delta = scrollTop - offset + currentOffset;
+                if(delta < 0){
+                    delta = 0;
+                }
+                currentOffset = delta;
+                if(currentOffset > maxOffset){
+                    currentOffset = maxOffset;
+                }
+                console.log(currentOffset, maxOffset)
+                $('#editor').css({marginTop: currentOffset + 'px'})
+            });
         }
 
         function isScrolledIntoView(elem){

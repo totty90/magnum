@@ -129,6 +129,9 @@ li:before {
   padding: 5px;
   -webkit-transition: all 500ms ease;
 }
+.ace-monokai .ace_marker-layer .ace_active-line {
+  background: #368F4B !important;
+}
 .mt0 {
   margin-top: 0;
 }
