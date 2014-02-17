@@ -175,30 +175,15 @@
                 var scrollTop = $(window).scrollTop();
                 var offset = $('#editor').offset().top;
                 var delta = scrollTop - offset + currentOffset;
-                var fixedPos = true;
                 if(delta < 0){
                     delta = 0;
-                    fixedPos = false;
                 }
                 currentOffset = delta;
                 if(currentOffset > maxOffset){
                     currentOffset = maxOffset;
-                    fixedPos = false;
                 }
-                if(!fixedPos){
-                    $('#editor').css({
-                        marginTop: currentOffset + 'px',
-                        position: 'relative',
-                    })
-                }else{
-                    $('#editor').css({
-                        position: 'fixed',
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        margin: 0,
-                    })
-                }
+                console.log(currentOffset, maxOffset)
+                $('#editor').css({marginTop: currentOffset + 'px'})
             });
         }
         if(runCodePupup){
