@@ -35,8 +35,11 @@
     </script>
     <!-- End of Google Analytics -->
 
+
+
     <script type='text/javascript'>
-        var codePopup = function(){};
+        var runCodePupup = false;
+        var codePopup = function(){runCodePupup = true;};
     </script>
 
 
@@ -51,6 +54,31 @@
 	<script type='text/javascript' src='/assets/highlighter/prettify.js'></script>
 	<script type='text/javascript' src='/assets/js/all.min.js'></script>
 
+
+    <script type='text/javascript'>
+        // var root = $('body')
+        // var recursive = function(parent){
+        //     var area = parent.width() * parent.height();
+        //     if(Math.random() > 0.9){
+        //         parent.css({opacity: 0})
+        //         .animate({
+        //             opacity: 1
+        //         }, 1500)
+        //     }
+        //     var children = parent.children();
+        //     $.each(children, function(i, child){
+        //         recursive($(child));
+        //     })
+        // }
+        // recursive(root);
+
+
+        $('.posttitle_magnum, .readmore_magnum').css({
+            opacity: 0
+        }).animate({
+            opacity: 1
+        }, 1500)
+    </script>
 
     <script type='text/javascript'>
         var codePopup = function(){
@@ -157,17 +185,9 @@
                 $('#editor').css({marginTop: currentOffset + 'px'})
             });
         }
-
-        function isScrolledIntoView(elem){
-            var docViewTop = $(window).scrollTop();
-            var docViewBottom = docViewTop + $(window).height();
-
-            var elemTop = $(elem).offset().top;
-            var elemBottom = elemTop + $(elem).height();
-
-            return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+        if(runCodePupup){
+            codePopup();
         }
-        codePopup();
     </script>
 
 
@@ -274,7 +294,7 @@
             //     }
             // }
         ]
-        var chosenAd = Math.floor(Math.random() * adGroups.length - 0.01);
+        var chosenAd = Math.floor((Math.random() - 0.01) * adGroups.length);
         adGroups[chosenAd].fn();
         (adsbygoogle = window.adsbygoogle || []).push({});
         console.log('Has been chosen the: ' + adGroups[chosenAd].name + ' ad group.')
