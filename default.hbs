@@ -112,6 +112,7 @@
 
             var editor = ace.edit("editor");
             var updateEditorSize = function(){
+                maxOffset = $('.postcontent_magnum').height() - $('.postcontent_magnum').offset().top;
                 // update size of editor on resize
                 var height = indexView ? 300 : $(window).height()
                 $('#editor').css({
@@ -169,8 +170,8 @@
             });
 
             var currentOffset = 0;
+            var maxOffset = $('.postcontent_magnum').height() - $('.postcontent_magnum').offset().top;
             $(window).scroll(function() {
-                var maxOffset = $('.postcontent_magnum').height() - $('.postcontent_magnum').offset().top;
                 var scrollTop = $(window).scrollTop();
                 var offset = $('#editor').offset().top;
                 var delta = scrollTop - offset + currentOffset;
