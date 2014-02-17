@@ -185,7 +185,7 @@
                     currentOffset = maxOffset;
                     fixedPos = false;
                 }
-                if(fixedPos){
+                if(!fixedPos){
                     $('#editor').css({
                         marginTop: currentOffset + 'px',
                         position: 'relative',
@@ -196,6 +196,7 @@
                         top: 0,
                         right: 0,
                         bottom: 0,
+                        margin: 0,
                     })
                 }
             });
